@@ -1,0 +1,7 @@
+devel/
+build/
+build_isolated/
+devel_isolated/
+
+# Catkin custom files
+CATKIN_IGNORE
