@@ -48,21 +48,21 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: #AF_INET represent 
 			if data!=(b'no asign'):
 				direct=str(data)[2:len(str(data))-1]
 			if direct=="Stop":
+				kit.motor1.throttle =0
 				kit.motor2.throttle =0
-				kit.motor3.throttle =0
 			elif direct=="forward" :
-				kit.motor2.throttle=0.3
-				kit.motor3.throttle =0.3
+				kit.motor1.throttle=0.3
+				kit.motor2.throttle =0.3
 			elif direct=="backward":
-				kit.motor2.throttle=-0.3
-				kit.motor3.throttle =-0.3								
+				kit.motor1.throttle=-0.3
+				kit.motor2.throttle =-0.3								
 			elif direct=="right":
-				kit.motor2.throttle=0
-				kit.motor3.throttle =0.3								
+				kit.motor1.throttle=0
+				kit.motor2.throttle =0.3								
 			elif direct=="left":
-				kit.motor2.throttle=0.3
-				kit.motor3.throttle =0
-			else:
+				kit.motor1.throttle=0.3
 				kit.motor2.throttle =0
-				kit.motor3.throttle =0				
+			else:
+				kit.motor1.throttle =0
+				kit.motor2.throttle =0				
 kit.motor1.throttle=0

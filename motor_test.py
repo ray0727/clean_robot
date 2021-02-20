@@ -1,4 +1,4 @@
-
+#! /usr/bin/env python3
 import time
 import board
 from adafruit_motorkit import MotorKit

@@ -3,4 +3,5 @@
     <node pkg="robot_setup_tf" type="tf_broadcaster" name="tf_broadcaster" output="screen" />
     <include file="$(find rf2o_laser_odometry)/launch/rf2o_laser_odometry.launch" />
 
+	<node pkg="robot_navigation" type="motor_control.py" name="motor_control" output="screen" /> 
 </launch>

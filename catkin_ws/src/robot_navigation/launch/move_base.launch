@@ -9,6 +9,6 @@
     <rosparam file="$(find robot_navigation)/cfg/local_costmap.yaml" command="load" />
     <rosparam file="$(find robot_navigation)/cfg/global_costmap.yaml" command="load" />
     <rosparam file="$(find robot_navigation)/cfg/base_local_planner_params.yaml" command="load" />
-    <!-- <remap from="odom"   to="scanmatch_odom"/> -->
+    <param name="controller_frequency" value="8.0" />
   </node>
 </launch>
