@@ -1,0 +1,5 @@
+<launch>
+	<node name="map_test" pkg="robot_navigation" type="maptest" output="screen">
+	</node>
+
+</launch>
