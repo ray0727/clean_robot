@@ -29,16 +29,16 @@ class ControlNode(object):
 		else:
 			#straight
 			if(angular<=straight_param and angular>=-straight_param):
-				self.kit.motor1.throttle=0.36
-				self.kit.motor2.throttle=0.3
+				self.kit.motor1.throttle=0.3
+				self.kit.motor2.throttle=0.25
 			#turn right
 			elif(angular<-straight_param):
-				self.kit.motor1.throttle=0.3
-				self.kit.motor2.throttle=-0.3
+				self.kit.motor1.throttle=0.25
+				self.kit.motor2.throttle=-0.25
 			#turn left
 			elif(angular>straight_param):
-				self.kit.motor1.throttle=-0.3
-				self.kit.motor2.throttle=0.3
+				self.kit.motor1.throttle=-0.25
+				self.kit.motor2.throttle=0.25
 
 	def on_shutdown(self):
 		rospy.logwarn("Stopping motors")

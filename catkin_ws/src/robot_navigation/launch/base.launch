@@ -4,4 +4,5 @@
     <include file="$(find rf2o_laser_odometry)/launch/rf2o_laser_odometry.launch" />
 
 	<node pkg="robot_navigation" type="motor_control.py" name="motor_control" output="screen" /> 
+	
 </launch>
