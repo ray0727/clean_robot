@@ -4,7 +4,6 @@
 #include "std_msgs/String.h"
 #include "nav_msgs/Odometry.h"
 #include "geometry_msgs/Point.h"
-#include "geometry_msgs/PoseStamped.h"
 #include <stdio.h>
 #include "Self_Clean.h"
 #include <string>
@@ -73,16 +72,14 @@ class Self_Clean{
 		int robot_status;//store robot status 
 		enum robot_status_define{ Normal_Mode,Map_Complete,Map_notComplete,Robot_Move,Robot_Scan,Search_Unknown};
 	protected:
-		ros::Subscriber map_sub,pose_sub,slam_pose_sub;
+		ros::Subscriber map_sub,pose_sub;
 		ros::Publisher  point_pub;
-		
 		//ros::Publisher //send motor control info
 	public:	
 	Self_Clean();
 	~Self_Clean();
 	void mapcallback(const nav_msgs::OccupancyGrid::ConstPtr& msg);
 	void posecallback(const nav_msgs::Odometry::ConstPtr& Pose);
-	void slamposecallback(const geometry_msgs::PoseStamped::ConstPtr& Pose);
 	bool is_init();
 //	void straight_feedback();//help car go straight
 //	bool check_mapcomplete();
@@ -114,13 +111,13 @@ Point Self_Clean::start_clean(){
 				locate=(y)*map_width+x-1;		
 				if(map[locate]==' ' && map[locate+map_width]==' ' && map[locate-map_width]==' ' && map[locate+1]==' ' && map[locate-1]==' '){
 					if(!is_break){
-						start.x=x-map_width/2-1;
-						start.y=y-map_width/2-1;
+						start.x=x-map_width/2;
+						start.y=y-map_width/2;
 						is_break=true;
 						change=true;
 					}else{
-				 		end.x=x-map_width/2-1;
-						end.y=y-map_width/2-1;
+				 		end.x=x-map_width/2;
+						end.y=y-map_width/2;
 					}
 				}
 			}
@@ -175,7 +172,7 @@ Point Self_Clean::start_clean(){
 bool Self_Clean::is_arrive(){
 	//Point *p=clean_map_p->previous->point;
 	//ROS_INFO("is_arrive");
-	return /*(robot_pose.x==aim.x && robot_pose.y==aim.y);*/(robot_pose.x>=(aim.x-1) && robot_pose.x<=(aim.x+1) && robot_pose.y>=(aim.y-1) && robot_pose.y<=(aim.y+1));
+	return (robot_pose.x==aim.x && robot_pose.y==aim.y);	//(robot_pose.x>=(aim.x-1) && robot_pose.x<=(aim.x+1) && robot_pose.y>=(aim.y-1) && robot_pose.y<=(aim.y+1));
 }
 
 bool Self_Clean::send_point(){
@@ -243,7 +240,6 @@ Self_Clean::Self_Clean(){
 	mapcomplete=false;
 	map_sub=n1.subscribe("map",1000,&Self_Clean::mapcallback,this);
 	pose_sub=n1.subscribe("odom",1000,&Self_Clean::posecallback,this);
-	slam_pose_sub=n1.subscribe("slam_out_pose",1000,&Self_Clean::slamposecallback,this);
   	point_pub=n1.advertise<geometry_msgs::Point>("robot_point",1000);
 	//give robot initial condition
 	robot_pose=Point(0,0);
@@ -293,7 +289,7 @@ void Self_Clean::mapcallback(const nav_msgs::OccupancyGrid::ConstPtr& msg){
 
 	int data,locate=(map_width/2+robot_pose.y)*map_width+robot_pose.x+map_width/2;//data save  0~100 obstacle probability, locate save robot location
 	
-	//ROS_INFO("in mapcallback:%d,%d",);
+	ROS_INFO("in mapcallback");
 	std::string map_print="";
 	if(check_getmap()==false && map_init==true){//if map is complete,it will not refresh  
 			
@@ -399,7 +395,7 @@ void Self_Clean::mapcallback(const nav_msgs::OccupancyGrid::ConstPtr& msg){
 void Self_Clean::posecallback(const nav_msgs::Odometry::ConstPtr& Pose){
 	float diffx,diffy;
 	if(map_init){
-		/*this->robot_nv.orientation=Pose->pose.pose.orientation;
+		this->robot_nv.orientation=Pose->pose.pose.orientation;
 		//get_robot real pose , map[(width/2-y)*width+x+width/2]
 		if(Pose->pose.pose.position.x>0){
 			diffx=0.5;
@@ -413,29 +409,6 @@ void Self_Clean::posecallback(const nav_msgs::Odometry::ConstPtr& Pose){
 		}	
 		robot_pose.x=(int)((Pose->pose.pose.position.x)/map_resolution+diffx);
 		robot_pose.y=(int)(Pose->pose.pose.position.y/map_resolution+diffy);
-		odom_init=true;
-		ROS_INFO("robot pose:%d,%d",robot_pose.x,robot_pose.y);*/
-	}
-}
-
-void Self_Clean::slamposecallback(const geometry_msgs::PoseStamped::ConstPtr& Pose){
-	ROS_INFO("slam_pose:%lf,%lf",Pose->pose.position.x,Pose->pose.position.y);
-	float diffx,diffy;
-	if(map_init){
-		//this->robot_nv.orientation=Pose->pose.pose.orientation;
-		//get_robot real pose , map[(width/2-y)*width+x+width/2]
-		if(Pose->pose.position.x>0){
-			diffx=0.5;
-		}else{
-			diffx=-0.5;
-		}
-		if(Pose->pose.position.y>0){
-			diffy=0.5;
-		}else{
-			diffy=-0.5;
-		}	
-		robot_pose.x=(int)((Pose->pose.position.x)/map_resolution+diffx);
-		robot_pose.y=(int)(Pose->pose.position.y/map_resolution+diffy);
 		odom_init=true;
 		ROS_INFO("robot pose:%d,%d",robot_pose.x,robot_pose.y);
 	}
