@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find robot_navigation)/launch/base.launch" />
+	<include file="$(find mapping)/launch/mapping.launch" />
+	<include file="$(find robot_navigation)/launch/move_base.launch" />
+</launch>
