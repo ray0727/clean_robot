@@ -72,8 +72,8 @@ CLaserOdometry2DNode::CLaserOdometry2DNode() :
   //Read Parameters
   //----------------
   ros::NodeHandle pn("~");
-  pn.param<std::string>("laser_scan_topic",laser_scan_topic,"/scan");
-  pn.param<std::string>("odom_topic", odom_topic, "/odom_rf2o");
+  pn.param<std::string>("laser_scan_topic",laser_scan_topic,"scan");
+  pn.param<std::string>("odom_topic", odom_topic, "odom");
   pn.param<std::string>("base_frame_id", base_frame_id, "/base_link");
   pn.param<std::string>("odom_frame_id", odom_frame_id, "/odom");
   pn.param<bool>("publish_tf", publish_tf, true);
