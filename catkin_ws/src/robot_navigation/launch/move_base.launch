@@ -1,15 +1,12 @@
 <launch>
-  <arg name="veh" default="master" />
-  <group ns="$(arg veh)">
-    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-      <rosparam file="$(find robot_navigation)/cfg/costmap_params.yaml" command="load" ns="global_costmap" />
-      <rosparam file="$(find robot_navigation)/cfg/costmap_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find robot_navigation)/cfg/local_costmap.yaml" command="load" />
-      <rosparam file="$(find robot_navigation)/cfg/global_costmap.yaml" command="load" />
-      <rosparam file="$(find robot_navigation)/cfg/base_local_planner_params.yaml" command="load" />
-      <param name="controller_frequency" value="8.0" />
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find robot_navigation)/cfg/costmap_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find robot_navigation)/cfg/costmap_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find robot_navigation)/cfg/local_costmap.yaml" command="load" />
+    <rosparam file="$(find robot_navigation)/cfg/global_costmap.yaml" command="load" />
+    <rosparam file="$(find robot_navigation)/cfg/base_local_planner_params.yaml" command="load" />
+    <param name="controller_frequency" value="8.0" />
   </node>
-  </group>
 </launch>
 
 
