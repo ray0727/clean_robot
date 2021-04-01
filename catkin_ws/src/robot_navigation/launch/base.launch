@@ -1,7 +1,7 @@
 <launch>
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
     <node pkg="robot_setup_tf" type="tf_broadcaster" name="tf_broadcaster" output="screen" />
-    <include file="$(find rf2o_laser_odometry)/launch/rf2o_laser_odometry.launch" />
+    <!-- <include file="$(find rf2o_laser_odometry)/launch/rf2o_laser_odometry.launch" />
     <node pkg="robot_navigation" type="gpio_bump.py" name="gpio_bump" output="screen" />
-    <node pkg="robot_navigation" type="motor_control.py" name="motor_control" output="screen" /> 
+    <node pkg="robot_navigation" type="motor_control.py" name="motor_control" output="screen" />  -->
 </launch>

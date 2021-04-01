@@ -1,0 +1,8 @@
+---
+map_frame: "base_link"
+map_res: 0.3
+map_x: -5.15 # origin relative to the origin of "base_link"
+map_y: -15.15 # origin relative to the origin of "base_link"
+map_z: 0
+map_height: 100
+map_width: 100

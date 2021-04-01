@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>   
+    <node pkg="astar" type="path_plan" name="plan" output="screen" />
+
+
+    <node pkg="astar" type="tracking.py" name="track" output="screen" />
+
+    <node pkg="control" type="pid_control.py" name="control" output="screen" />
+        
+</launch>

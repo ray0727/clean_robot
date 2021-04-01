@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+    <arg name="veh" doc="please specify veh"/>
+    <arg name="config_file" default="grid_map_info"/>
+    <arg name="map_frame" default="odom"/>
+    <arg name="robot_frame" default="base_link"/>
+    <arg name="use_odom" default="False"/>
+    <arg name="use_tf" default="True"/>
+    <arg name="sim" default="False"/>
+
+    <group ns="$(arg veh)">
+        
+        <group if="$(eval veh =='locobot')">
+            <group if="$(arg sim)">
+                <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" />
+
+                <node pkg="nodelet" type="nodelet" name="nodelet1"
+                        args="load depth_image_proc/point_cloud_xyzrgb nodelet_manager">
+                    <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+                    <remap from="rgb/image_rect_color" to="/camera/color/image_raw"/>
+                    <remap from="depth_registered/image_rect" to="/camera/aligned_depth_to_color/image_raw"/>
+                    <remap from="depth_registered/points" to="/camera/depth_registered/points"/>
+                </node>
+            </group>
+
+            <node pkg="astar" type="depthpc2grid" name="depthpc2grid" output="screen">
+                <rosparam command="load" file="$(find astar)/config/$(arg config_file)_hist.yaml" />
+            </node>
+            <node pkg="astar" type="path_plan" name="plan" output="screen">
+                <remap from="map" to="depthcam_map" />
+            </node>
+            <node pkg="astar" type="tracking_guid_locobot.py" name="track" output="screen">
+                <param name="map_frame" value="$(arg map_frame)" />
+                <param name="lookahead" value="0.4" />
+                <remap from="joy_teleop/joy" to="/joy" />
+            </node>
+            <node pkg="control" type="pid_control.py" name="control" output="screen">
+                <rosparam param="cmd_ratio" subst_value="True">3</rosparam>    
+                <rosparam param="use_odom" subst_value="True">$(arg use_odom)</rosparam>
+                <rosparam param="use_tf" subst_value="True">$(arg use_tf)</rosparam>
+                <param name="robot" value="$(arg veh)"/>
+                <param name="robot_frame" value="$(arg robot_frame)"/>
+                <param name="map_frame" value="$(arg map_frame)"/>
+                <remap from="cmd_vel" to="/cmd_vel_mux/input/navi" />
+                <remap from="joy_teleop/joy" to="/joy" />
+            </node>
+        </group>
+        <group unless="$(eval veh =='locobot')">
+            <node pkg="astar" type="lidarpc2grid" name="lidarpc2grid" output="screen">
+                <remap from="points" to="/velodyne1/velodyne_points" />
+                <rosparam command="load" file="$(find astar)/config/$(arg config_file).yaml" />
+            </node>
+            <node pkg="astar" type="path_plan" name="plan" output="screen">
+                <remap from="map" to="pc_map" />
+            </node>
+            <node pkg="astar" type="tracking_guid.py" name="track" output="screen">
+                <param name="map_frame" value="$(arg map_frame)" />
+                <param name="lookahead" value="0.7" />
+                <remap from="joy_teleop/joy" to="/bluetooth_teleop/joy" />
+            </node>
+            <node pkg="astar" type="odom_tf.py" name="odom_tf" output="screen">
+                <remap from="husky_velocity_controller/odom" to="/jackal_velocity_controller/odom" />
+            </node>
+            <node pkg="control" type="pid_control.py" name="control" output="screen">
+                <rosparam param="cmd_ratio" subst_value="True">0.65</rosparam>
+                <rosparam param="use_odom" subst_value="True">$(arg use_odom)</rosparam>
+                <rosparam param="use_tf" subst_value="True">$(arg use_tf)</rosparam>
+                <param name="robot_frame" value="$(arg robot_frame)"/>
+                <param name="map_frame" value="$(arg map_frame)"/>
+                <remap from="cmd_vel" to="/jackal_velocity_controller/cmd_vel" />
+                <remap from="joy_teleop/joy" to="/bluetooth_teleop/joy" />
+            </node>
+        </group>
+    </group>
+
+</launch>
