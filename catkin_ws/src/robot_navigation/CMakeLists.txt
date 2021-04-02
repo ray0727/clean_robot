@@ -140,6 +140,10 @@ target_link_libraries(maptest ${catkin_LIBRARIES})
 
 add_executable(self_clean src/map.cpp src/Self_Clean.h)
 target_link_libraries(self_clean ${catkin_LIBRARIES})
+
+add_executable(clean_robot src/clean_robot/clean_robot.cpp src/clean_robot/clean_robot.h src/clean_robot/map_scan.cpp src/clean_robot/map_scan.h src/clean_robot/self_clean.h src/clean_robot/self_clean.cpp)
+target_link_libraries(clean_robot ${catkin_LIBRARIES})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

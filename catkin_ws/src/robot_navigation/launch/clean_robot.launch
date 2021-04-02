@@ -1,0 +1,5 @@
+<launch>
+	<node name="clean_robot" pkg="robot_navigation" type="clean_robot" output="screen">
+	</node>
+
+</launch>

@@ -1,5 +1,0 @@
-#Request data
-int8 pos
----
-#Response data
-bool result 

@@ -1,0 +1,11 @@
+Base path: /home/ubuntu/clean_robot/catkin_ws
+Source space: /home/ubuntu/clean_robot/catkin_ws/src
+Build space: /home/ubuntu/clean_robot/catkin_ws/build
+Devel space: /home/ubuntu/clean_robot/catkin_ws/devel
+Install space: /home/ubuntu/clean_robot/catkin_ws/install
+####
+#### Running command: "make cmake_check_build_system" in "/home/ubuntu/clean_robot/catkin_ws/build"
+####
+####
+#### Running command: "make -al -j4 -l4" in "/home/ubuntu/clean_robot/catkin_ws/build"
+####

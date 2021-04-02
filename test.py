@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO #
 import time
 import socket
 import clrobot_self as self
@@ -47,6 +47,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: #AF_INET represent 
 				print(data)
 			if data!=(b'no asign'):
 				direct=str(data)[2:len(str(data))-1]
+			else:
+				direct="Stop"
 			if direct=="Stop":
 				kit.motor1.throttle =0
 				kit.motor2.throttle =0
