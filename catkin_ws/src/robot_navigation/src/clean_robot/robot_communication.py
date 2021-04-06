@@ -63,7 +63,7 @@ class Server(object):
             self.map=self.map+chr(msg.data[i])
             if (i%64)==63:
                 self.map=self.map+'\n'
-        self.map=self.map+str(msg.info.origin.position.x)+' '+str(msg.info.origin.position.y)+'\n'
+        #self.map=self.map+str(msg.info.origin.position.x)+' '+str(msg.info.origin.position.y)+'\n'
 
     def on_shutdown(self):
         rospy.logwarn("stop connect to client robot")

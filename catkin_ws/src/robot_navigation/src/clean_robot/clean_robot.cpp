@@ -89,6 +89,7 @@ void Clean_Robot::mapcallback(const nav_msgs::OccupancyGrid::ConstPtr& msg){
 		sc.init(width,map_->map,resolution);
 	}else if(!check_getmap()){
 		//map_->print_map(robot_pose);
+		publish_clean_robot_map();
 	}else{
 		for(int i=0;i<width*width;i++)
 			map_data[i]=msg->data[i];
@@ -125,6 +126,7 @@ void Clean_Robot::clean_regioncallback(const std_msgs::String::ConstPtr& region_
 	if(robot_status & Initial)
 		return;
 	robot_status|=Outer_Command;
+	ROS_INFO("region callback %d",robot_status);
 	std::string s=region_msg->data;
 	char * cstr = new char [s.length()+1];
   	std::strcpy (cstr, s.c_str());
@@ -152,6 +154,7 @@ void Clean_Robot::clean_regioncallback(const std_msgs::String::ConstPtr& region_
 		this->region[1].y=t;
 	}
 	if(robot_status==(Normal_Mode | TWO_robot | Outer_Command)){
+		ROS_INFO("two robot mode clean region");
 		s="";
 		s+="clean_region\n";
 		if(abs(region[0].x-region[1].x)>abs(region[0].y-region[1].y)){
@@ -187,6 +190,7 @@ void Clean_Robot::publish_clean_robot_map(){
 }
 
 void Clean_Robot::slavepointcallback(const geometry_msgs::PoseStamped::ConstPtr& p){
+	ROS_INFO("two robot mode");
 	robot_status|=TWO_robot;
 }
 
@@ -211,7 +215,7 @@ int main(int argc,char *argv[]){
 
 				break;
 			case main.Map_Complete:
-				ROS_INFO("Map compleete");
+				ROS_INFO("Map complete");
 				main.publish_clean_robot_map();
 				main.robot_status^=main.Map_Complete;
 				main.robot_status|=main.Normal_Mode;

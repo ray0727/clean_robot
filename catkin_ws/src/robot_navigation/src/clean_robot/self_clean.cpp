@@ -32,13 +32,13 @@ Point Self_Clean::start_clean(Pointf region[2]){
 				locate=(y)*map_width+x-1;		
 				if(map[locate]==' ' && map[locate+map_width]==' ' && map[locate-map_width]==' ' && map[locate+1]==' ' && map[locate-1]==' '){
 					if(!is_break){
-						start.x=x-map_width/2-1;
-						start.y=y-map_width/2-1;
+						start.x=x-map_width/2;
+						start.y=y-map_width/2;
 						is_break=true;
 						change=true;
 					}else{
-				 		end.x=x-map_width/2-1;
-						end.y=y-map_width/2-1;
+				 		end.x=x-map_width/2;
+						end.y=y-map_width/2;
 					}
 				}
 			}
